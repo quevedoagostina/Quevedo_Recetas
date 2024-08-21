@@ -13,6 +13,7 @@ function RecipeItem({ recipe, index }) {
         )}
         <h3>{recipe.name}</h3>
         <p>{recipe.description}</p>
+        <p className="recipe-author">Por: {recipe.author}</p>
       </Link>
       <button onClick={() => deleteRecipe(index)}>Eliminar</button>
     </div>

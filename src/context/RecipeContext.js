@@ -1,21 +1,32 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
 export const RecipeContext = createContext();
 
 export const RecipeProvider = ({ children }) => {
-  const [recipes, setRecipes] = useState(() => {
-    const storedRecipes = localStorage.getItem('quevedo-recipes');
-    return storedRecipes ? JSON.parse(storedRecipes) : [];
-  });
-
+  const [recipes, setRecipes] = useState([]);
   const [notification, setNotification] = useState(null);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    const storedRecipes = localStorage.getItem('quevedo-recipes');
+    if (storedRecipes) {
+      setRecipes(JSON.parse(storedRecipes));
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('quevedo-recipes', JSON.stringify(recipes));
   }, [recipes]);
 
   const addRecipe = (recipe) => {
-    setRecipes(prevRecipes => [...prevRecipes, recipe]);
+    const newRecipe = { 
+      ...recipe, 
+      author: user ? user.username : 'Anónimo',
+      instructions: recipe.instructions || 'No se proporcionaron instrucciones.'
+    };
+    console.log('Nueva receta añadida:', newRecipe); // Para depuración
+    setRecipes(prevRecipes => [...prevRecipes, newRecipe]);
     setNotification({ message: '¡Receta añadida con éxito!', type: 'success' });
   };
 

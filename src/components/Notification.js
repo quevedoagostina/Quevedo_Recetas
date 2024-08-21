@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-function Notification({ message, type, duration = 3000 }) {
-  const [isVisible, setIsVisible] = useState(true);
-
+function Notification({ message, type, onClose }) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, duration);
+      onClose();
+    }, 3000);
 
     return () => clearTimeout(timer);
-  }, [duration]);
-
-  if (!isVisible) return null;
+  }, [onClose]);
 
   return (
     <div className={`notification ${type}`}>

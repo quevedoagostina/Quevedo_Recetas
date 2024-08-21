@@ -8,6 +8,8 @@ function RecipeDetail() {
   const { recipes, deleteRecipe } = useContext(RecipeContext);
   const recipe = recipes[id];
 
+  console.log('Receta actual:', recipe); // Para depuración
+
   if (!recipe) {
     return <div>Receta no encontrada</div>;
   }
@@ -23,10 +25,13 @@ function RecipeDetail() {
       {recipe.imageUrl && (
         <img src={recipe.imageUrl} alt={recipe.name} className="recipe-detail-image" />
       )}
-      <h2>Descripción</h2>
-      <p>{recipe.description}</p>
-      <h2>Instrucciones</h2>
-      <p>{recipe.recipeInstructions}</p>
+      <h2>Descripción:</h2>
+      <p className="recipe-description">{recipe.description}</p>
+      <h2>Instrucciones:</h2>
+      <p className="recipe-instructions">
+        {recipe.instructions || 'No se proporcionaron instrucciones.'}
+      </p>
+      <p className="recipe-author">Creado por: {recipe.author}</p>
       <div className="button-group">
         <Link to="/recipes" className="back-button">Volver a las recetas</Link>
         <button onClick={handleDelete} className="delete-button">Eliminar Receta</button>
